@@ -311,7 +311,7 @@ export default function Dashboard() {
               <div>
                 <p className="text-dark-400 text-sm mb-1">Stratum URL</p>
                 <code className="block bg-dark-800 rounded-lg px-3 py-2 text-sm font-mono text-brand-400 break-all">
-                  stratum+tcp://YOUR_IP:3333
+                  stratum+tcp://wernerpool.nerds.ch:3333
                 </code>
               </div>
               <div>

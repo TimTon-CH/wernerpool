@@ -97,7 +97,7 @@ export default function Workers() {
             Connect your mining hardware to start mining. Use the stratum URL shown on the dashboard.
           </p>
           <div className="bg-dark-800 rounded-lg p-4 inline-block">
-            <code className="text-brand-400 font-mono">stratum+tcp://YOUR_IP:3333</code>
+            <code className="text-brand-400 font-mono">stratum+tcp://wernerpool.nerds.ch:3333</code>
           </div>
         </div>
       ) : (

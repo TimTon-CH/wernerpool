@@ -14,7 +14,7 @@ app.use(cors());
 // Proxy API requests manually without http-proxy-middleware for simplicity
 app.use('/api', async (req, res) => {
   try {
-    const targetUrl = `${API_URL}${req.url}`;
+    const targetUrl = `${API_URL}/api${req.url}`;
     
     const fetchOptions = {
       method: req.method,

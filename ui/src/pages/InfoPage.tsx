@@ -62,10 +62,10 @@ export default function InfoPage() {
             <label className="text-dark-400 text-sm mb-2 block">Stratum URL</label>
             <div className="flex items-center gap-2">
               <code className="flex-1 bg-dark-800 rounded-lg px-4 py-3 text-brand-400 font-mono break-all">
-                stratum+tcp://YOUR_UMBREL_IP:3333
+                stratum+tcp://wernerpool.nerds.ch:3333
               </code>
               <button
-                onClick={() => copyToClipboard('stratum+tcp://YOUR_UMBREL_IP:3333', 'stratum')}
+                onClick={() => copyToClipboard('stratum+tcp://wernerpool.nerds.ch:3333', 'stratum')}
                 className="p-3 rounded-lg bg-dark-800 hover:bg-dark-700 transition-colors"
               >
                 {copied === 'stratum' ? (
