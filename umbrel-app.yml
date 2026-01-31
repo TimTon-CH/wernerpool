@@ -4,7 +4,7 @@ name: WERNERPOOL
 tagline: Solo Bitcoin Mining Pool - Mine directly to your wallet
 icon: https://raw.githubusercontent.com/TimTon-CH/wernerpool/main/wernerpool/images/logo.png
 category: bitcoin
-version: "2.0.4"
+version: "2.0.6"
 port: 3334
 description: >-
   WERNERPOOL is a self-hosted solo Bitcoin mining pool that runs on your Umbrel.
@@ -46,10 +46,10 @@ repo: https://github.com/TimTon-CH/wernerpool
 support: https://github.com/TimTon-CH/wernerpool/issues
 gallery: []
 releaseNotes: >-
-  WERNERPOOL v2.0.4 - Solo Bitcoin Mining Pool for Umbrel.
-  Features full Stratum V1 support with proper Merkle branch construction,
-  average hashrate display, real-time dashboard, worker management,
-  and best difficulty scoreboard. Full ARM64/AMD64 Docker support.
+  WERNERPOOL v2.0.6 - Solo Bitcoin Mining Pool for Umbrel.
+  Critical fixes: Correct block header construction per Bitcoin protocol spec,
+  proper byte ordering for prevHash/merkleRoot, verified 80-byte header format.
+  Full Stratum V1 support, real-time dashboard, ARM64/AMD64 Docker support.
 dependencies:
   - bitcoin
 path: ""

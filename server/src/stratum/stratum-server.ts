@@ -608,10 +608,11 @@ export class StratumServer {
       this.currentJob?.merkleBranches || []
     );
 
-    // Build block header
+    // Build block header using internal byte formats
+    // prevHashBuffer is the true little-endian format (not the Stratum word-swapped format)
     const blockHeader = this.buildBlockHeader(
       this.currentJob?.version,
-      this.currentJob?.prevHash,
+      this.currentJob?.prevHashBuffer?.toString('hex') || '',
       merkleRoot,
       ntime,
       this.currentJob?.nbits,
@@ -666,14 +667,53 @@ export class StratumServer {
     bits: string,
     nonce: string
   ): Buffer {
-    return Buffer.concat([
-      Buffer.from(version, 'hex'),
-      Buffer.from(prevHash, 'hex'),
-      Buffer.from(merkleRoot, 'hex'),
-      Buffer.from(ntime, 'hex'),
-      Buffer.from(bits, 'hex'),
-      Buffer.from(nonce, 'hex')
+    // Bitcoin block header is 80 bytes:
+    // - version: 4 bytes, little-endian
+    // - prevHash: 32 bytes, internal byte order (little-endian hash)
+    // - merkleRoot: 32 bytes, internal byte order (little-endian hash)
+    // - timestamp: 4 bytes, little-endian
+    // - bits: 4 bytes, little-endian
+    // - nonce: 4 bytes, little-endian
+    
+    // Version from job is big-endian hex, reverse for little-endian
+    const versionLE = this.reverseHex(version);
+    
+    // PrevHash is already in internal byte order (little-endian) from prevHashBuffer
+    // MerkleRoot is already in internal byte order from calculateMerkleRoot
+    // (both are raw hash bytes, NOT display format - no reversal needed)
+    
+    // Ntime from miner is big-endian hex, reverse for little-endian
+    const ntimeLE = this.reverseHex(ntime);
+    
+    // Bits from getblocktemplate is big-endian hex, reverse for little-endian
+    const bitsLE = this.reverseHex(bits);
+    
+    // Nonce from miner is big-endian hex, reverse for little-endian
+    const nonceLE = this.reverseHex(nonce);
+    
+    const header = Buffer.concat([
+      Buffer.from(versionLE, 'hex'),      // 4 bytes
+      Buffer.from(prevHash, 'hex'),       // 32 bytes - already internal order
+      Buffer.from(merkleRoot, 'hex'),     // 32 bytes - already internal order
+      Buffer.from(ntimeLE, 'hex'),        // 4 bytes
+      Buffer.from(bitsLE, 'hex'),         // 4 bytes
+      Buffer.from(nonceLE, 'hex')         // 4 bytes
     ]);
+    
+    // Verify header is exactly 80 bytes
+    if (header.length !== 80) {
+      this.logger.error({ 
+        headerLength: header.length,
+        versionLen: versionLE.length,
+        prevHashLen: prevHash.length,
+        merkleRootLen: merkleRoot.length,
+        ntimeLen: ntime.length,
+        bitsLen: bits.length,
+        nonceLen: nonce.length
+      }, 'Invalid block header length - must be 80 bytes');
+    }
+    
+    return header;
   }
 
   private calculateShareDifficulty(headerBuffer: Buffer): number {
@@ -683,9 +723,11 @@ export class StratumServer {
     
     // Calculate difficulty from hash
     // Difficulty 1 target = 0x00000000FFFF...
-    const hashBigInt = BigInt('0x' + hash2.reverse().toString('hex'));
+    // Note: Create a copy before reversing to avoid mutating the original
+    const hashReversed = Buffer.from(hash2).reverse();
+    const hashBigInt = BigInt('0x' + hashReversed.toString('hex'));
     
-    if (hashBigInt === BigInt(0)) return 0;
+    if (hashBigInt === BigInt(0)) return Number.MAX_SAFE_INTEGER;
     
     const maxTarget = BigInt('0x00000000FFFF0000000000000000000000000000000000000000000000000000');
     const difficulty = Number(maxTarget / hashBigInt);

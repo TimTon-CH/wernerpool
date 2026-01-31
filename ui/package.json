@@ -1,6 +1,6 @@
 {
   "name": "wernerpool-ui",
-  "version": "2.0.4",
+  "version": "2.0.6",
   "description": "WERNERPOOL - Solo Bitcoin Mining Pool Dashboard",
   "type": "module",
   "scripts": {

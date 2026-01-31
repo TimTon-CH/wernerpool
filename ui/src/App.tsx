@@ -94,7 +94,7 @@ function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
               <p className="text-xs text-dark-400 font-mono">Port 3333</p>
             </div>
             <div className="flex items-center justify-between text-xs text-dark-500">
-              <span>v2.0.4</span>
+              <span>v2.0.6</span>
               <a 
                 href="https://github.com/TimTon-CH/wernerpool" 
                 target="_blank" 

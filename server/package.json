@@ -1,6 +1,6 @@
 {
   "name": "wernerpool-server",
-  "version": "2.0.4",
+  "version": "2.0.6",
   "description": "WERNERPOOL - Solo Bitcoin Mining Pool Stratum Server",
   "main": "dist/main.js",
   "scripts": {

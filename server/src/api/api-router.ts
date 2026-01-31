@@ -73,7 +73,7 @@ export class ApiRouter {
 
       res.json({
         poolName: 'WERNERPOOL',
-        version: '2.0.0',
+        version: '2.0.6',
         stratumPort: 3333,
         hashrate: poolStats.totalHashrate,
         hashrateFormatted: this.formatHashrate(poolStats.totalHashrate),
